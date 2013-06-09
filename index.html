@@ -18,11 +18,11 @@
 	
 	<link type="text/css" href="jscrollpane/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
-	<title>Rippleå®æ¶ç½ç»äº¤ææ¥è¯¢</title>
+	<title>Ripple实时网络交易查询</title>
 </head>
 
 <body>
-<div class="light heading darkgray">Rippleå®æ¶ç½ç»äº¤ææ¥è¯¢</div>
+<div class="light heading darkgray">Ripple实时网络交易查询</div>
 
 
 <!-- BEGIN VISUALIZATION DIV -->
@@ -32,19 +32,19 @@
     position: absolute;
     top: -72px;
 	left:35px;">
-æ»ç»ç¹æ°: <span id="ledgernumber"></span><br/>
-rippleæ»æ°: <span id="totalripples"></span><br/></div>
+总结点数: <span id="ledgernumber"></span><br/>
+ripple总数: <span id="totalripples"></span><br/></div>
 <!-- top bar -->
 <input id="focus" class="light midsize rounded topbar" style="left:35px; padding:0 10px; width:295px; height:42px;" type="text"/>
-<input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px;" type="button" value="æ¥è¯¢" onClick="changeMode('individual'); refocus($('#focus').val().replace(/\s+/g, ''),true);"/>
+<input id="searchButton" class="topbar" style="left:360px; width:50px; height:50px;" type="button" value="查询" onClick="changeMode('individual'); refocus($('#focus').val().replace(/\s+/g, ''),true);"/>
 <div class="topbar" style="left:684px; height:42px; width:230px; outline:none;">
 	<select id="currency" onchange="changeCurrency(this.value);">
-		<option value="XRP">è´§å¸éæ©</option>
-		<option value="USD">ç¾å</option>
-		<option value="EUR">æ¬§å</option>
-		<option value="JPY">æ¥å</option>
-		<option value="BTC">æ¯ç¹å¸</option>
-		<option value="___">å¶å®</option>
+		<option value="XRP">货币选择</option>
+		<option value="USD">美元</option>
+		<option value="EUR">欧元</option>
+		<option value="JPY">日元</option>
+		<option value="BTC">比特币</option>
+		<option value="___">其它</option>
 	</select>
 	<input type="text" id="otherCurrency" value="other" class=" sbSelector sbHolder" onfocus="focusOtherCurrency(this);" onblur="blurOtherCurrency(this);" />
 </div>
@@ -56,15 +56,15 @@ rippleæ»æ°: <span id="totalripples"></span><br/></div>
 
 <div id="loading" class="light large" style="color:#aaa; position:absolute; left:390px; top:100px; line-height:50px;">
 	<img src="throbber4.gif" style="vertical-align: middle;"/>
-	æ­£å¨å è½½æ°æ®...
+	正在加载数据...
 </div>
 
 
 <!-- begin information below -->
 <div id="information" style="opacity:0.8; background-color:#fff; position:absolute; top:704px; left:1.3px; width:934px; height:401px; border-top: 1px solid #c8c8c8;">
 
-<div class="tab midsize mediumgray unselectedTab" style="margin-top:-36px; margin-left:140px;" onclick="changeMode('feed');" id="feedTab">Rippleç½ç»å¹¿æ­</div>
-<div id="individualTab" class="tab midsize mediumgray selectedTab" style="margin-top:-35px; margin-left:-1.25px;" onclick="changeMode('individual',senderAddress);">é±åè¯¦æ</div>
+<div class="tab midsize mediumgray unselectedTab" style="margin-top:-36px; margin-left:140px;" onclick="changeMode('feed');" id="feedTab">Ripple网络广播</div>
+<div id="individualTab" class="tab midsize mediumgray selectedTab" style="margin-top:-35px; margin-left:-1.25px;" onclick="changeMode('individual',senderAddress);">钱包详情</div>
 
 
 <div id="focalAddress" class="light mediumgray large" style="margin-bottom:13px; margin-top:13px; padding-left:20px; float:left;">&nbsp;</div>
@@ -75,8 +75,8 @@ rippleæ»æ°: <span id="totalripples"></span><br/></div>
 
 	
 <div class="fullwidth topbordered horizontalrule"></div>
-<div class="light midsize mediumgray" id="leftHeading" style="border: none; float:left; padding-left:20px;">æ»åºå¡å¹³è¡¡</div>
-<div class="light midsize mediumgray" id="rightHeading" style="width:44%; border:none; float:right;">åå²äº¤æè®°å½</div>
+<div class="light midsize mediumgray" id="leftHeading" style="border: none; float:left; padding-left:20px;">总债务平衡</div>
+<div class="light midsize mediumgray" id="rightHeading" style="width:44%; border:none; float:right;">历史交易记录</div>
 <div class="clearboth"></div>
 <div class="fullwidth bottombordered horizontalrule"></div>
 
@@ -304,7 +304,7 @@ server.socket.onmessage = function(msg) { //Process a message received from Ripp
 	if (obj && obj.result && obj.result.lines) {
 		addConnections(obj.result.account, obj.result.lines);
 	} else if(obj.transaction) {
-		console.log("è·å¾äº¤ææ°æ®!");
+		console.log("获得交易数据!");
 		$("#transactionFeedTable").prepend(renderTransaction(obj.transaction));
 		if (obj.transaction.TransactionType == "Payment") {
 			animateTransaction(obj.transaction);
@@ -412,8 +412,8 @@ function changeMode(newMode, data) {
 
 function enterIndividualMode(data) {
 	if (mode != "individual") {
-		$("#leftHeading").text("æ»åºå¡å¹³è¡¡è¡¨");
-		$("#rightHeading").text("åå²äº¤æç¶åµ");
+		$("#leftHeading").text("总债务平衡表");
+		$("#rightHeading").text("历史交易状况");
 		$("#focalAddress").css("visibility","visible");
 		$("#balanceTable").css("visibility","visible");
 		$("#transactionTable").css("visibility","visible");
@@ -442,7 +442,7 @@ function enterFeedMode() {
 		$("#feedTab").removeClass("unselectedTab").addClass("selectedTab");
 		$("#individualTab").addClass("unselectedTab").removeClass("selectedTab");
 		$("#transactionFeed").css("display","inherit");
-		$("#leftHeading").text("å®æ¶äº¤æç¶åµ");
+		$("#leftHeading").text("实时交易状况");
 		mode = "feed";
 	}
 }
@@ -488,10 +488,10 @@ function enterTransactionMode(tx) {
 							degreeMap[nodes[k].account.Account] = 1;
 							k++;
 						} else {
-							console.log("Rippleè·¯å¾æ²¡æååº.");
+							console.log("Ripple路径没有响应.");
 						}
 					} else {
-						console.log("èç¹å·²ç»è¢«æ·»å è³ç½ç».");
+						console.log("节点已经被添加至网络.");
 					}
 				}
 			}
@@ -596,7 +596,7 @@ function renderTransaction(tx) {
 			'<td style="width:1px;"><span class="bold amount small">'+commas(amount)+'</span>&nbsp;<span class="light small darkgray">'+currency+'</span></td>'+
 			'<td style="text-align:center; width:20px;"><i class="light small darkgray">'+
 			( to ?
-				'å°</i></td>'+
+				'到</i></td>'+
 				'<td style="width:1px;">'+clickableAccountSpan(to)+'</td>'
 				:
 				'for</i></td>'+
@@ -1506,10 +1506,10 @@ function updateInformation(address) {
 				'</table></div></td></tr>');
 			$('#'+cur+'InnerTable').append(
 				'<tr>'+
-					'<th class="light midsize mediumgray" style="width:50%;">å°å</th>'+
-					'<td class="light midsize mediumgray" style="width:16%;">æå°</td>'+
-					'<td class="light midsize mediumgray center" style="width:16%">å¹³è¡¡</td>'+
-					'<td class="light midsize mediumgray right" style="width:16%;">æå¤§</td>'+
+					'<th class="light midsize mediumgray" style="width:50%;">地址</th>'+
+					'<td class="light midsize mediumgray" style="width:16%;">最小</td>'+
+					'<td class="light midsize mediumgray center" style="width:16%">平衡</td>'+
+					'<td class="light midsize mediumgray right" style="width:16%;">最大</td>'+
 				'</tr>');
 			for (var j=0; j<trustLinesForCur.length; j++) {
 				var tl = trustLinesForCur[j];
@@ -1669,28 +1669,28 @@ function agoDate(secondsSince2000) {
 	var unit;
 	if (secondsAgo < 1) {
 		number = 0;
-		unit = "å½å";
+		unit = "当前";
 	} else if (secondsAgo < 60) {
 		number = Math.floor(secondsAgo);
-		unit = "ç§";
+		unit = "秒";
 	} else if (secondsAgo < 3600) {
 		number = Math.floor(secondsAgo/60);
-		unit = "åé";
+		unit = "分钟";
 	} else if (secondsAgo < 86400) {
 		number = Math.floor(secondsAgo/3600);
-		unit = "å°æ¶";
+		unit = "小时";
 	} else if (secondsAgo < 604800) {
 		number = Math.floor(secondsAgo/86400);
-		unit = "å¤©";
+		unit = "天";
 	} else if (secondsAgo < 2629746) {
 		number = Math.floor(secondsAgo/604800);
-		unit = "å¨";
+		unit = "周";
 	} else if (secondsAgo < 31556952) {
 		number = Math.floor(secondsAgo/2629746);
-		unit = "æ";
+		unit = "月";
 	} else {
 		number = Math.floor(secondsAgo/31556952);
-		unit = "å¹´";
+		unit = "年";
 	}
 	if (number != 1) {
 		unit += ""
@@ -1701,7 +1701,7 @@ function agoDate(secondsSince2000) {
 	
 	var d = new Date(0);
 	d.setUTCSeconds(secondsSince2000+946684800);
-	return '<span style="margin-right:5px" class="light small mediumgray date" title="'+d.toUTCString()+'">'+number+" "+unit+'å</span>';
+	return '<span style="margin-right:5px" class="light small mediumgray date" title="'+d.toUTCString()+'">'+number+" "+unit+'前</span>';
 }
 
 function absoluteDate(secondsSince2000) {
